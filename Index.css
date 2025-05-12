@@ -75,7 +75,7 @@ img {
 .box p{
     padding-top: 10px;
 }
-.card__data {
+.card__data,.data {
     width: 280px;
     background-color:  hsl(0, 0%, 100%);
     padding: 1.5rem 2rem;
