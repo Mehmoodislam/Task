@@ -1,0 +1,1714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health & Fitness Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #6b8cae;
+            --accent-color: #ff7e5f;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --success-color: #28a745;
+            --info-color: #17a2b8;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
+            --border-radius: 10px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            transition: var(--transition);
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            text-align: center;
+        }
+
+        .sidebar-header h2 {
+            margin-bottom: 10px;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 5px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: white;
+            text-decoration: none;
+            transition: var(--transition);
+            border-left: 4px solid transparent;
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .sidebar-menu i {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 250px;
+            padding: 20px;
+            transition: var(--transition);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .header h1 {
+            color: var(--primary-color);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+        }
+
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        /* Cards */
+        .card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .card-header h3 {
+            color: var(--primary-color);
+        }
+
+        /* Progress Bars */
+        .progress-container {
+            margin-bottom: 15px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 5px;
+            background-color: var(--accent-color);
+            width: 0;
+            transition: width 1s ease;
+        }
+
+        /* Summary Grid */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .summary-item {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            box-shadow: var(--box-shadow);
+        }
+
+        .summary-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 18px;
+            color: white;
+        }
+
+        .steps .summary-icon { background-color: var(--success-color); }
+        .calories .summary-icon { background-color: var(--danger-color); }
+        .water .summary-icon { background-color: var(--info-color); }
+        .sleep .summary-icon { background-color: var(--primary-color); }
+
+        .summary-info h4 {
+            margin-bottom: 5px;
+            color: var(--dark-color);
+        }
+
+        /* Workout Preview */
+        .workout-preview {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .workout-video {
+            width: 100px;
+            height: 60px;
+            border-radius: var(--border-radius);
+            background-color: #ddd;
+            overflow: hidden;
+            margin-right: 15px;
+            position: relative;
+        }
+
+        .workout-video img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(255, 255, 255, 0.8);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-color);
+        }
+
+        .workout-info h4 {
+            margin-bottom: 5px;
+        }
+
+        .workout-info p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            text-decoration: none;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .btn:hover {
+            background-color: #ff6a45;
+            transform: translateY(-2px);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        .btn-outline:hover {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 10px;
+        }
+
+        .action-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 10px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-btn i {
+            font-size: 24px;
+            margin-bottom: 8px;
+            color: var(--accent-color);
+        }
+
+        /* Meal Plan */
+        .meal-plan {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .meal-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+        }
+
+        .meal-image {
+            height: 120px;
+            background-color: #ddd;
+            overflow: hidden;
+        }
+
+        .meal-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .meal-info {
+            padding: 15px;
+        }
+
+        .meal-info h4 {
+            margin-bottom: 5px;
+        }
+
+        .meal-info p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Diet Plan Tab */
+        .goal-selection {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .goal-card {
+            padding: 15px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--box-shadow);
+            border: 2px solid transparent;
+        }
+
+        .goal-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .goal-card.active {
+            border-color: var(--accent-color);
+            background-color: rgba(255, 126, 95, 0.1);
+        }
+
+        .goal-card i {
+            font-size: 30px;
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        /* Food Type Selection */
+        .food-type-selection {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .food-type-btn {
+            padding: 8px 15px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .food-type-btn.active {
+            background-color: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        /* Weekly Meal Plan */
+        .weekly-meal-plan {
+            margin-top: 20px;
+        }
+
+        .day-tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .day-tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: var(--transition);
+        }
+
+        .day-tab.active {
+            border-bottom-color: var(--accent-color);
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+
+        .meal-time {
+            margin-bottom: 20px;
+        }
+
+        .meal-time h4 {
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .meal-item {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            margin-bottom: 10px;
+            box-shadow: var(--box-shadow);
+        }
+
+        .meal-item img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 15px;
+        }
+
+        .meal-details {
+            flex: 1;
+        }
+
+        .meal-details h5 {
+            margin-bottom: 5px;
+        }
+
+        .meal-details p {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .meal-calories {
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        /* Workout Tab */
+        .workout-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .workout-category {
+            padding: 20px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--box-shadow);
+        }
+
+        .workout-category:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .workout-category i {
+            font-size: 40px;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .workout-category h4 {
+            margin-bottom: 10px;
+        }
+
+        .workout-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .workout-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: var(--transition);
+        }
+
+        .workout-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .workout-card-image {
+            height: 150px;
+            background-color: #ddd;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .workout-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .workout-card-duration {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .workout-card-body {
+            padding: 15px;
+        }
+
+        .workout-card-title {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .workout-card-title h4 {
+            color: var(--primary-color);
+        }
+
+        .workout-card-difficulty {
+            font-size: 12px;
+            padding: 3px 8px;
+            background-color: #f0f0f0;
+            border-radius: 20px;
+        }
+
+        .workout-card-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .workout-card-calories {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        .workout-card-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Progress Tab */
+        .progress-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            box-shadow: var(--box-shadow);
+            text-align: center;
+        }
+
+        .stat-card h4 {
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .stat-card p {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--accent-color);
+        }
+
+        .chart-container {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--box-shadow);
+            height: 300px;
+        }
+
+        .badges-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 15px;
+        }
+
+        .badge-card {
+            background-color: white;
+            border-radius: var(--border-radius);
+            padding: 15px;
+            text-align: center;
+            box-shadow: var(--box-shadow);
+        }
+
+        .badge-icon {
+            width: 60px;
+            height: 60px;
+            background-color: #f0f0f0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            font-size: 24px;
+            color: var(--accent-color);
+        }
+
+        .badge-card h5 {
+            margin-bottom: 5px;
+        }
+
+        .badge-card p {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .badge-earned {
+            background-color: rgba(255, 126, 95, 0.1);
+            border: 2px solid var(--accent-color);
+        }
+
+        /* Settings Tab */
+        .settings-section {
+            margin-bottom: 30px;
+        }
+
+        .settings-section h3 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 16px;
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .theme-selector {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .theme-option {
+            flex: 1;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .theme-preview {
+            width: 100%;
+            height: 80px;
+            border-radius: var(--border-radius);
+            margin-bottom: 10px;
+            border: 2px solid transparent;
+        }
+
+        .theme-option.active .theme-preview {
+            border-color: var(--accent-color);
+        }
+
+        .light-theme {
+            background-color: #f8f9fa;
+        }
+
+        .dark-theme {
+            background-color: #343a40;
+        }
+
+        .language-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .language-option {
+            padding: 10px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            text-align: center;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            transition: var(--transition);
+        }
+
+        .language-option.active {
+            background-color: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 70px;
+                overflow: hidden;
+            }
+            
+            .sidebar-header h2, .sidebar-menu span {
+                display: none;
+            }
+            
+            .sidebar-menu a {
+                justify-content: center;
+                padding: 15px 0;
+                border-left: none;
+                border-right: 4px solid transparent;
+            }
+            
+            .sidebar-menu a:hover, .sidebar-menu a.active {
+                border-left: none;
+                border-right: 4px solid var(--accent-color);
+            }
+            
+            .sidebar-menu i {
+                margin-right: 0;
+                font-size: 20px;
+            }
+            
+            .main-content {
+                margin-left: 70px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .summary-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .meal-plan, .workout-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .user-profile {
+                margin-top: 15px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .goal-selection, .workout-categories {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>HealthFit</h2>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="#" class="active" data-tab="home"><i class="fas fa-home"></i> <span>Home</span></a></li>
+                <li><a href="#" data-tab="diet"><i class="fas fa-utensils"></i> <span>Diet Plan</span></a></li>
+                <li><a href="#" data-tab="workout"><i class="fas fa-dumbbell"></i> <span>Workout</span></a></li>
+                <li><a href="#" data-tab="progress"><i class="fas fa-chart-line"></i> <span>Progress</span></a></li>
+                <li><a href="#" data-tab="settings"><i class="fas fa-cog"></i> <span>Settings</span></a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Home Tab -->
+            <div id="home" class="tab-content active">
+                <div class="header">
+                    <h1>Dashboard</h1>
+                    <div class="user-profile">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+                        <span>Ali</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Good morning, Ali! You're 40% to your daily goal.</h3>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>Steps walked</span>
+                            <span>3,500 / 10,000</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 35%;"></div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>Water intake</span>
+                            <span>3 / 8 glasses</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 37.5%;"></div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>Calories consumed</span>
+                            <span>900 / 2,000</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 45%;"></div>
+                        </div>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>Sleep time</span>
+                            <span>6 / 8 hours</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 75%;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Today's Summary</h3>
+                    </div>
+                    <div class="summary-grid">
+                        <div class="summary-item steps">
+                            <div class="summary-icon">
+                                <i class="fas fa-walking"></i>
+                            </div>
+                            <div class="summary-info">
+                                <h4>Steps</h4>
+                                <p>3,500 / 10,000</p>
+                            </div>
+                        </div>
+                        <div class="summary-item calories">
+                            <div class="summary-icon">
+                                <i class="fas fa-hamburger"></i>
+                            </div>
+                            <div class="summary-info">
+                                <h4>Calories</h4>
+                                <p>900 / 2,000</p>
+                            </div>
+                        </div>
+                        <div class="summary-item water">
+                            <div class="summary-icon">
+                                <i class="fas fa-tint"></i>
+                            </div>
+                            <div class="summary-info">
+                                <h4>Water</h4>
+                                <p>3 / 8 glasses</p>
+                            </div>
+                        </div>
+                        <div class="summary-item sleep">
+                            <div class="summary-icon">
+                                <i class="fas fa-bed"></i>
+                            </div>
+                            <div class="summary-info">
+                                <h4>Sleep</h4>
+                                <p>6 / 8 hours</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Today's Workout</h3>
+                    </div>
+                    <div class="workout-preview">
+                        <div class="workout-video">
+                            <img src="https://img.youtube.com/vi/dZgVxmf6jkA/maxresdefault.jpg" alt="Workout">
+                            <div class="play-button">
+                                <i class="fas fa-play"></i>
+                            </div>
+                        </div>
+                        <div class="workout-info">
+                            <h4>15 min: Full Body HIIT</h4>
+                            <p>Burn calories and build endurance with this high-intensity workout</p>
+                        </div>
+                    </div>
+                    <button class="btn">Start Workout</button>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Today's Meal Plan</h3>
+                    </div>
+                    <div class="meal-plan">
+                        <div class="meal-card">
+                            <div class="meal-image">
+                                <img src="https://images.unsplash.com/photo-1606787366850-de6330128bfc?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Breakfast">
+                            </div>
+                            <div class="meal-info">
+                                <h4>Breakfast</h4>
+                                <p>Oats + Banana</p>
+                                <p class="meal-calories">350 kcal</p>
+                            </div>
+                        </div>
+                        <div class="meal-card">
+                            <div class="meal-image">
+                                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Lunch">
+                            </div>
+                            <div class="meal-info">
+                                <h4>Lunch</h4>
+                                <p>Grilled Chicken + Salad</p>
+                                <p class="meal-calories">550 kcal</p>
+                            </div>
+                        </div>
+                        <div class="meal-card">
+                            <div class="meal-image">
+                                <img src="https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Dinner">
+                            </div>
+                            <div class="meal-info">
+                                <h4>Dinner</h4>
+                                <p>Lentil Soup + Brown Rice</p>
+                                <p class="meal-calories">450 kcal</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Quick Actions</h3>
+                    </div>
+                    <div class="quick-actions">
+                        <div class="action-btn">
+                            <i class="fas fa-plus"></i>
+                            <span>Add meal</span>
+                        </div>
+                        <div class="action-btn">
+                            <i class="fas fa-plus"></i>
+                            <span>Add workout</span>
+                        </div>
+                        <div class="action-btn">
+                            <i class="fas fa-plus"></i>
+                            <span>Add water</span>
+                        </div>
+                        <div class="action-btn">
+                            <i class="fas fa-plus"></i>
+                            <span>Log sleep</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Diet Plan Tab -->
+            <div id="diet" class="tab-content">
+                <div class="header">
+                    <h1>Diet Plan</h1>
+                    <div class="user-profile">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+                        <span>Ali</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Select Your Goal</h3>
+                    </div>
+                    <div class="goal-selection">
+                        <div class="goal-card active">
+                            <i class="fas fa-weight"></i>
+                            <h4>Weight Loss</h4>
+                            <p>1,500 kcal/day</p>
+                        </div>
+                        <div class="goal-card">
+                            <i class="fas fa-dumbbell"></i>
+                            <h4>Muscle Gain</h4>
+                            <p>2,500 kcal/day</p>
+                        </div>
+                        <div class="goal-card">
+                            <i class="fas fa-balance-scale"></i>
+                            <h4>Maintenance</h4>
+                            <p>2,000 kcal/day</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Choose Food Type</h3>
+                    </div>
+                    <div class="food-type-selection">
+                        <div class="food-type-btn active">Vegetarian</div>
+                        <div class="food-type-btn">Non-vegetarian</div>
+                        <div class="food-type-btn">Vegan</div>
+                        <div class="food-type-btn">Keto</div>
+                        <div class="food-type-btn">Desi</div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Weekly Meal Plan</h3>
+                    </div>
+                    <div class="weekly-meal-plan">
+                        <div class="day-tabs">
+                            <div class="day-tab active">Monday</div>
+                            <div class="day-tab">Tuesday</div>
+                            <div class="day-tab">Wednesday</div>
+                            <div class="day-tab">Thursday</div>
+                            <div class="day-tab">Friday</div>
+                            <div class="day-tab">Saturday</div>
+                            <div class="day-tab">Sunday</div>
+                        </div>
+
+                        <div class="meal-time">
+                            <h4>Breakfast (400 kcal)</h4>
+                            <div class="meal-item">
+                                <img src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Breakfast">
+                                <div class="meal-details">
+                                    <h5>Oatmeal with Berries</h5>
+                                    <p>Oats, almond milk, blueberries, honey</p>
+                                </div>
+                                <div class="meal-calories">350 kcal</div>
+                            </div>
+                            <div class="meal-item">
+                                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Breakfast">
+                                <div class="meal-details">
+                                    <h5>Green Smoothie</h5>
+                                    <p>Spinach, banana, almond milk, chia seeds</p>
+                                </div>
+                                <div class="meal-calories">150 kcal</div>
+                            </div>
+                        </div>
+
+                        <div class="meal-time">
+                            <h4>Lunch (600 kcal)</h4>
+                            <div class="meal-item">
+                                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Lunch">
+                                <div class="meal-details">
+                                    <h5>Quinoa Salad</h5>
+                                    <p>Quinoa, cherry tomatoes, cucumber, feta</p>
+                                </div>
+                                <div class="meal-calories">450 kcal</div>
+                            </div>
+                            <div class="meal-item">
+                                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Lunch">
+                                <div class="meal-details">
+                                    <h5>Fruit Bowl</h5>
+                                    <p>Apple, orange, grapes, walnuts</p>
+                                </div>
+                                <div class="meal-calories">150 kcal</div>
+                            </div>
+                        </div>
+
+                        <div class="meal-time">
+                            <h4>Dinner (500 kcal)</h4>
+                            <div class="meal-item">
+                                <img src="https://images.unsplash.com/photo-1476718406336-bb5a9690ee2a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Dinner">
+                                <div class="meal-details">
+                                    <h5>Lentil Soup</h5>
+                                    <p>Red lentils, carrots, onions, spices</p>
+                                </div>
+                                <div class="meal-calories">300 kcal</div>
+                            </div>
+                            <div class="meal-item">
+                                <img src="https://images.unsplash.com/photo-1547592180-85f173990554?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Dinner">
+                                <div class="meal-details">
+                                    <h5>Brown Rice</h5>
+                                    <p>Brown rice, olive oil, herbs</p>
+                                </div>
+                                <div class="meal-calories">200 kcal</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Grocery List</h3>
+                    </div>
+                    <div class="grocery-list">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Add item to grocery list">
+                        </div>
+                        <ul id="grocery-items">
+                            <li>Oats</li>
+                            <li>Almond milk</li>
+                            <li>Blueberries</li>
+                            <li>Quinoa</li>
+                            <li>Cherry tomatoes</li>
+                            <li>Cucumber</li>
+                            <li>Red lentils</li>
+                            <li>Brown rice</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Workout Tab -->
+            <div id="workout" class="tab-content">
+                <div class="header">
+                    <h1>Workout Plans</h1>
+                    <div class="user-profile">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+                        <span>Ali</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Workout Type</h3>
+                    </div>
+                    <div class="workout-categories">
+                        <div class="workout-category">
+                            <i class="fas fa-home"></i>
+                            <h4>Home Workouts</h4>
+                            <p>No equipment needed</p>
+                        </div>
+                        <div class="workout-category">
+                            <i class="fas fa-dumbbell"></i>
+                            <h4>Gym Workouts</h4>
+                            <p>Using gym equipment</p>
+                        </div>
+                        <div class="workout-category">
+                            <i class="fas fa-spa"></i>
+                            <h4>Yoga & Stretching</h4>
+                            <p>Improve flexibility</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Select By Goal</h3>
+                    </div>
+                    <div class="goal-selection">
+                        <div class="goal-card active">
+                            <i class="fas fa-fire"></i>
+                            <h4>Fat Burn</h4>
+                            <p>High intensity</p>
+                        </div>
+                        <div class="goal-card">
+                            <i class="fas fa-dumbbell"></i>
+                            <h4>Muscle Gain</h4>
+                            <p>Strength training</p>
+                        </div>
+                        <div class="goal-card">
+                            <i class="fas fa-spa"></i>
+                            <h4>Flexibility</h4>
+                            <p>Yoga & stretching</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Recommended Workouts</h3>
+                    </div>
+                    <div class="workout-list">
+                        <div class="workout-card">
+                            <div class="workout-card-image">
+                                <img src="https://img.youtube.com/vi/dZgVxmf6jkA/maxresdefault.jpg" alt="Workout">
+                                <div class="workout-card-duration">15 min</div>
+                            </div>
+                            <div class="workout-card-body">
+                                <div class="workout-card-title">
+                                    <h4>Full Body HIIT</h4>
+                                    <span class="workout-card-difficulty">Intermediate</span>
+                                </div>
+                                <div class="workout-card-info">
+                                    <span><i class="fas fa-fire"></i> Fat Burn</span>
+                                    <span class="workout-card-calories">200 kcal</span>
+                                </div>
+                                <p>High-intensity interval training to burn maximum calories in minimum time.</p>
+                                <div class="workout-card-actions">
+                                    <button class="btn">Start Workout</button>
+                                    <button class="btn btn-outline">Preview</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="workout-card">
+                            <div class="workout-card-image">
+                                <img src="https://img.youtube.com/vi/ml6cT4AZdqI/maxresdefault.jpg" alt="Workout">
+                                <div class="workout-card-duration">20 min</div>
+                            </div>
+                            <div class="workout-card-body">
+                                <div class="workout-card-title">
+                                    <h4>Upper Body Strength</h4>
+                                    <span class="workout-card-difficulty">Beginner</span>
+                                </div>
+                                <div class="workout-card-info">
+                                    <span><i class="fas fa-dumbbell"></i> Muscle Gain</span>
+                                    <span class="workout-card-calories">150 kcal</span>
+                                </div>
+                                <p>Build strength in your arms, shoulders, chest and back with these exercises.</p>
+                                <div class="workout-card-actions">
+                                    <button class="btn">Start Workout</button>
+                                    <button class="btn btn-outline">Preview</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="workout-card">
+                            <div class="workout-card-image">
+                                <img src="https://img.youtube.com/vi/VaoV1PrYft4/maxresdefault.jpg" alt="Workout">
+                                <div class="workout-card-duration">30 min</div>
+                            </div>
+                            <div class="workout-card-body">
+                                <div class="workout-card-title">
+                                    <h4>Morning Yoga Flow</h4>
+                                    <span class="workout-card-difficulty">All Levels</span>
+                                </div>
+                                <div class="workout-card-info">
+                                    <span><i class="fas fa-spa"></i> Flexibility</span>
+                                    <span class="workout-card-calories">120 kcal</span>
+                                </div>
+                                <p>Gentle yoga sequence to wake up your body and calm your mind.</p>
+                                <div class="workout-card-actions">
+                                    <button class="btn">Start Workout</button>
+                                    <button class="btn btn-outline">Preview</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Completed Workouts</h3>
+                    </div>
+                    <div class="completed-workouts">
+                        <div class="workout-item">
+                            <div class="workout-info">
+                                <h4>Full Body HIIT</h4>
+                                <p>Completed: Today, 8:30 AM</p>
+                            </div>
+                            <div class="workout-stats">
+                                <span><i class="fas fa-fire"></i> 200 kcal</span>
+                                <span><i class="fas fa-clock"></i> 15 min</span>
+                            </div>
+                        </div>
+                        <div class="workout-item">
+                            <div class="workout-info">
+                                <h4>Morning Yoga Flow</h4>
+                                <p>Completed: Yesterday, 7:00 AM</p>
+                            </div>
+                            <div class="workout-stats">
+                                <span><i class="fas fa-fire"></i> 120 kcal</span>
+                                <span><i class="fas fa-clock"></i> 30 min</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Tab -->
+            <div id="progress" class="tab-content">
+                <div class="header">
+                    <h1>Your Progress</h1>
+                    <div class="user-profile">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+                        <span>Ali</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Overview</h3>
+                    </div>
+                    <div class="progress-stats">
+                        <div class="stat-card">
+                            <h4>Current Weight</h4>
+                            <p>75 kg</p>
+                        </div>
+                        <div class="stat-card">
+                            <h4>BMI</h4>
+                            <p>24.2</p>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Body Fat</h4>
+                            <p>18%</p>
+                        </div>
+                        <div class="stat-card">
+                            <h4>Weekly Change</h4>
+                            <p>-0.5 kg</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Weight Progress</h3>
+                    </div>
+                    <div class="chart-container">
+                        <!-- Chart would be rendered here with a library like Chart.js -->
+                        <canvas id="weightChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Body Measurements</h3>
+                    </div>
+                    <div class="measurements">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Chest (cm)</label>
+                                <input type="number" class="form-control" value="95">
+                            </div>
+                            <div class="form-group">
+                                <label>Waist (cm)</label>
+                                <input type="number" class="form-control" value="82">
+                            </div>
+                            <div class="form-group">
+                                <label>Hips (cm)</label>
+                                <input type="number" class="form-control" value="92">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Left Arm (cm)</label>
+                                <input type="number" class="form-control" value="30">
+                            </div>
+                            <div class="form-group">
+                                <label>Right Arm (cm)</label>
+                                <input type="number" class="form-control" value="30.5">
+                            </div>
+                            <div class="form-group">
+                                <label>Left Thigh (cm)</label>
+                                <input type="number" class="form-control" value="52">
+                            </div>
+                            <div class="form-group">
+                                <label>Right Thigh (cm)</label>
+                                <input type="number" class="form-control" value="52">
+                            </div>
+                        </div>
+                        <button class="btn">Save Measurements</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Achievements</h3>
+                    </div>
+                    <div class="badges-container">
+                        <div class="badge-card badge-earned">
+                            <div class="badge-icon">
+                                <i class="fas fa-fire"></i>
+                            </div>
+                            <h5>First Workout</h5>
+                            <p>Completed your first workout</p>
+                        </div>
+                        <div class="badge-card badge-earned">
+                            <div class="badge-icon">
+                                <i class="fas fa-dumbbell"></i>
+                            </div>
+                            <h5>5 Workouts</h5>
+                            <p>Completed 5 workouts</p>
+                        </div>
+                        <div class="badge-card">
+                            <div class="badge-icon">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <h5>10 Workouts</h5>
+                            <p>Complete 10 workouts</p>
+                        </div>
+                        <div class="badge-card">
+                            <div class="badge-icon">
+                                <i class="fas fa-weight"></i>
+                            </div>
+                            <h5>5kg Lost</h5>
+                            <p>Lose 5kg of weight</p>
+                        </div>
+                        <div class="badge-card badge-earned">
+                            <div class="badge-icon">
+                                <i class="fas fa-glass-cheers"></i>
+                            </div>
+                            <h5>Hydration</h5>
+                            <p>Drank 8 glasses for 7 days</p>
+                        </div>
+                        <div class="badge-card">
+                            <div class="badge-icon">
+                                <i class="fas fa-moon"></i>
+                            </div>
+                            <h5>Sleep Master</h5>
+                            <p>Slept 8hrs for 14 days</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div id="settings" class="tab-content">
+                <div class="header">
+                    <h1>Settings</h1>
+                    <div class="user-profile">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+                        <span>Ali</span>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="settings-section">
+                        <h3>Profile Information</h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>First Name</label>
+                                <input type="text" class="form-control" value="Ali">
+                            </div>
+                            <div class="form-group">
+                                <label>Last Name</label>
+                                <input type="text" class="form-control" value="Khan">
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Age</label>
+                                <input type="number" class="form-control" value="28">
+                            </div>
+                            <div class="form-group">
+                                <label>Gender</label>
+                                <select class="form-control">
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Height (cm)</label>
+                                <input type="number" class="form-control" value="175">
+                            </div>
+                            <div class="form-group">
+                                <label>Weight (kg)</label>
+                                <input type="number" class="form-control" value="75">
+                            </div>
+                        </div>
+                        <button class="btn">Save Profile</button>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>Goals</h3>
+                        <div class="form-group">
+                            <label>Primary Goal</label>
+                            <select class="form-control">
+                                <option>Weight Loss</option>
+                                <option selected>Muscle Gain</option>
+                                <option>Maintenance</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Target Weight (kg)</label>
+                            <input type="number" class="form-control" value="80">
+                        </div>
+                        <div class="form-group">
+                            <label>Daily Calorie Target</label>
+                            <input type="number" class="form-control" value="2500">
+                        </div>
+                        <button class="btn">Update Goals</button>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>Appearance</h3>
+                        <div class="form-group">
+                            <label>Theme</label>
+                            <div class="theme-selector">
+                                <div class="theme-option active">
+                                    <div class="theme-preview light-theme"></div>
+                                    <span>Light</span>
+                                </div>
+                                <div class="theme-option">
+                                    <div class="theme-preview dark-theme"></div>
+                                    <span>Dark</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Language</label>
+                            <div class="language-selector">
+                                <div class="language-option active">English</div>
+                                <div class="language-option">Hindi</div>
+                                <div class="language-option">Urdu</div>
+                                <div class="language-option">Arabic</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="settings-section">
+                        <h3>Notifications</h3>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> Workout Reminders
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> Meal Reminders
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" checked> Water Reminders
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox"> Progress Reports
+                            </label>
+                        </div>
+                        <button class="btn">Save Preferences</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Tab Switching
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabLinks = document.querySelectorAll('.sidebar-menu a');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all links and contents
+                    tabLinks.forEach(l => l.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked link and corresponding content
+                    this.classList.add('active');
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+            
+            // Goal Selection
+            const goalCards = document.querySelectorAll('.goal-card');
+            goalCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    const parent = this.parentElement;
+                    const siblings = parent.querySelectorAll('.goal-card');
+                    
+                    siblings.forEach(sib => sib.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Food Type Selection
+            const foodTypeBtns = document.querySelectorAll('.food-type-btn');
+            foodTypeBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const parent = this.parentElement;
+                    const siblings = parent.querySelectorAll('.food-type-btn');
+                    
+                    siblings.forEach(sib => sib.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Day Tabs
+            const dayTabs = document.querySelectorAll('.day-tab');
+            dayTabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const parent = this.parentElement;
+                    const siblings = parent.querySelectorAll('.day-tab');
+                    
+                    siblings.forEach(sib => sib.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Theme Selection
+            const themeOptions = document.querySelectorAll('.theme-option');
+            themeOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const parent = this.parentElement;
+                    const siblings = parent.querySelectorAll('.theme-option');
+                    
+                    siblings.forEach(sib => sib.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Apply theme (in a real app, this would change the CSS variables)
+                    if (this.querySelector('.theme-preview').classList.contains('dark-theme')) {
+                        document.body.classList.add('dark-mode');
+                    } else {
+                        document.body.classList.remove('dark-mode');
+                    }
+                });
+            });
+            
+            // Language Selection
+            const languageOptions = document.querySelectorAll('.language-option');
+            languageOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const parent = this.parentElement;
+                    const siblings = parent.querySelectorAll('.language-option');
+                    
+                    siblings.forEach(sib => sib.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Initialize progress bars animation
+            const progressBars = document.querySelectorAll('.progress-fill');
+            progressBars.forEach(bar => {
+                const width = bar.style.width;
+                bar.style.width = '0';
+                setTimeout(() => {
+                    bar.style.width = width;
+                }, 100);
+            });
+            
+            // Simulate weight chart (in a real app, use Chart.js)
+            const weightChart = document.getElementById('weightChart');
+            if (weightChart) {
+                weightChart.innerHTML = '<div style="text-align: center; padding-top: 120px;">Weight chart would display here with Chart.js</div>';
+            }
+        });
+    </script>
+</body>
+</html>
